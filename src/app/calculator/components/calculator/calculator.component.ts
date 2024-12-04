@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, viewChildren } from '@angular/core'
+import { CalculatorService } from '@/calculator/services/calculator.service'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  viewChildren,
+} from '@angular/core'
 import { CalculatorButtonComponent } from '../calculator-button/calculator-button.component'
 import { CalculatorScreenComponent } from '../calculator-screen/calculator-screen.component'
 
@@ -13,10 +19,11 @@ import { CalculatorScreenComponent } from '../calculator-screen/calculator-scree
   },
 })
 export class CalculatorComponent {
+  #calculatorService = inject(CalculatorService)
   calculatorButtons = viewChildren(CalculatorButtonComponent)
 
   handleClick(key: string) {
-    console.log({ key })
+    this.#calculatorService.constructNumber(key)
   }
 
   // @HostListener('document:keyup', ['$event'])
