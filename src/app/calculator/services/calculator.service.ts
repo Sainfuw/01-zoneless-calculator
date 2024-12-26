@@ -48,6 +48,15 @@ export class CalculatorService {
 
     // Aplica operadores
     if (operators.includes(value)) {
+      // Validar operadores consecutivos
+      if (
+        operators.includes(this.lastOperator()) &&
+        this.resultText() === '0'
+      ) {
+        this.lastOperator.set(value)
+        return
+      }
+
       this.calculateResult()
 
       this.lastOperator.set(value)
@@ -106,7 +115,14 @@ export class CalculatorService {
 
     if (this.lastOperator() === '+') result = number1 + number2
     if (this.lastOperator() === '-') result = number1 - number2
-    if (this.lastOperator() === '÷') result = number1 / number2
+    if (this.lastOperator() === '÷') {
+      // Validar división por cero
+      if (number2 === 0) {
+        console.error('Cannot divide by zero')
+        return
+      }
+      result = number1 / number2
+    }
     if (this.lastOperator() === '⨉') result = number1 * number2
     if (this.lastOperator() === '%') result = number1 % number2
 
